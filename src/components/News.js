@@ -30,21 +30,23 @@ export class News extends Component {
       model: "light",
       totalResults: 0,
     };
+    
     document.title=`${this.capitalizeFirstLetter(this.props.category)} -  LoremNews`
+    
   }
 
   async updateNews() {
     this.props.setProgress(10);
     this.setState({page:this.state.page + 1})
-    const url = `https://newsapi.org/v2/top-headlines?&category=${this.props.category}&apiKey=6a75f12ddcd044c7b33b537c3e84c732&pageSize=${this.props.pageSize}&page=${this.state.page}`;
-    console.log(url);
+    const url = `https://newsapi.org/v2/top-headlines?&category=${this.props.category}&apikey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    console.log(this.props.apiKey)
     this.setState({ loading: true });
     try {
       let data = await fetch(url);
       this.props.setProgress(30);
       let passedData = await data.json();
       this.props.setProgress(70);
-      console.log("API Response:", passedData); // Log the API response
+       // Log the API response
 
       this.setState({
         articles: this.state.articles.concat(passedData.articles),

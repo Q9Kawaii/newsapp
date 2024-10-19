@@ -4,11 +4,15 @@ export class NewsItem extends Component {
   render() {
     let { title, description, imageUrl, newsUrl, mode, author, date, source} = this.props;
     return (
+<>
+      
       <div className="card my-2" style={{ backgroundColor: mode === 'dark' ? '#2e2e2e' : 'white', color: mode === 'dark' ? 'white' : 'black' }}>
-        <span className="position-absolute text-wrap top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    {source}
-    <span className="visually-hidden">unread messages</span>
-  </span>
+        <div className="d-flex justify-content-end position-absolute" style={{right:'0'}}>
+              <span className="badge rounded-pill bg-danger">
+                {source}
+                <span className="visually-hidden">unread messages</span>
+              </span>
+        </div>
         <img src={!imageUrl?"https://via.placeholder.com/150":imageUrl} className="card-img-top" alt="..."/>
                     <div className="card-body" >
                         <h5 className="card-title">{title}  <span className="badge rounded-pill text-bg-success">Success</span></h5>
@@ -17,6 +21,7 @@ export class NewsItem extends Component {
                         <a rel="noreferrer" href={newsUrl} target="_blank" className={`btn btn-sm btn-${mode === 'dark' ? 'light' : 'dark'}`}>Read More</a>
                     </div>
       </div>
+      </>
     );
   }
 }
