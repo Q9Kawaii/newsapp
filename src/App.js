@@ -8,6 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import LoadingBar from 'react-top-loading-bar'
+import Headline from './components/Headline';
 
 export default class App extends Component {
 
@@ -15,6 +16,7 @@ export default class App extends Component {
     super();
     this.state = {
       mode: 'light',
+      headlineData: null,
     }
   }
 
@@ -35,7 +37,13 @@ export default class App extends Component {
     this.setState({progress: progress});
   }
 
+  handleDataFromNews = (data) => {
+    // Update the state with data received from News
+    this.setState({ headlineData: data });
+  };
+
   render() {
+    const { headlineData } = this.state;
     return (
       <div>
         <Router>
@@ -46,6 +54,7 @@ export default class App extends Component {
             progress={this.state.progress}
             // onLoaderFinished={() => setProgress(0)}
           />
+
           <Routes>
             <Route exact path="/" element={<News setProgress={this.setProgress} apiKey={this.apiKey} key="general" pageSize={5} country="in" category="general" mode={this.state.mode} />} />
             <Route exact path="/business" element={<News setProgress={this.setProgress} apiKey={this.apiKey} key="business" pageSize={5} country="us" category="business" mode={this.state.mode} />} />

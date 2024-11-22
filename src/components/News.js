@@ -3,6 +3,8 @@ import Spinner from "./Spinner";
 import NewsItem from "./NewsItem";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Headline from "./Headline";
+import './head.css';
 
 
 export class News extends Component {
@@ -58,28 +60,16 @@ export class News extends Component {
     }
     this.props.setProgress(100);
   }
-
-  // country=de&category=business&
   async componentDidMount() {
     this.updateNews();
   }
-
-  // handlePrevClick = async () => {
-  //   this.setState({page:this.state.page - 1});
-  //   this.updateNews();
-  // };
-
-  // handleNextClick = async () => {
-  //   this.setState({page: this.state.page + 1});
-  //   this.updateNews();
-  // };
 
   fetchMoreData = async () => {
     this.setState({page:this.state.page + 1});
     this.updateNews();
   };
 
-
+  
 
   render() {
     let { toggleMode, mode } = this.props;
@@ -95,6 +85,23 @@ export class News extends Component {
               mode === "dark" ? "light" : "black"
             }`}
           >LoremNews - Top {this.capitalizeFirstLetter(this.props.category)} HeadLines</h2>
+          <div className="head">
+            {this.state.articles.slice(0, 1).map((elements) => {
+              return (
+                <Headline 
+                  key={elements.url}
+                  title={elements.title}
+                  source={elements.source.name}
+                  author={elements.author}
+                  date={elements.publishedAt}
+                  description={elements.description}
+                  imageUrl={elements.urlToImage}
+                  newsUrl={elements.url}
+                  mode={this.props.mode}
+                />
+              );
+            })}
+          </div>
           {/* {this.state.loading && <Spinner />} */}          
           <InfiniteScroll
               dataLength={this.state.articles.length}
@@ -104,9 +111,10 @@ export class News extends Component {
         >
             <div className="container">
               <div className="row">
-                {this.state.articles.map((element) => {
+                {this.state.articles.slice(1,).map((element) => {
                     return (
                       <div key={element.url} className="col-md-3">
+                        
                         <NewsItem
                           title={element.title ? element.title : ""}
                           source={element.source.name ? element.source.name : ""}
@@ -126,30 +134,6 @@ export class News extends Component {
             </div>
           </InfiniteScroll>
         </div>
-        {/* <div
-          className="d-flex justify-content-around"
-          style={{ marginBottom: "20px" }}
-        >
-          <button
-            disabled={this.state.page <= 1}
-            type="button"
-            className="btn btn-dark"
-            onClick={this.handlePrevClick}
-          >
-            &larr; Previous
-          </button>
-          <button
-            disabled={
-              this.state.page + 1 >
-              Math.ceil(this.state.totalResults / this.props.pageSize)
-            }
-            type="button"
-            className="btn btn-dark"
-            onClick={this.handleNextClick}
-          >
-            Next &rarr;
-          </button>
-        </div> */}
       </div>
     );
   }
